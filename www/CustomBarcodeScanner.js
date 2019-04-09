@@ -7,7 +7,7 @@ var CustomBarcodeScanner = {
     exec(resolve, reject, PLUGIN_NAME, 'scan', [options]);
   },
   scanPromise: function (options) {
-    return new Promise((resolve, reject) => {
+    return new Promise(function (resolve, reject) {
       exec(resolve, reject, PLUGIN_NAME, 'scan', [options]);
     });
   }
