@@ -11,6 +11,8 @@ import android.widget.Button;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
+import android.R;
+
     public class ScannerActivity extends AppCompatActivity implements
         DecoratedBarcodeView.TorchListener {
 
