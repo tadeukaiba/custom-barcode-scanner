@@ -16,7 +16,6 @@
     <string name="tabs">Tabs</string>
     <string name="about">About</string>
     <color name="custom_barcode_torch_color">#f5ea6c</color>
-    <string name="app_name">Scan</string>
     <string name="title_activity_main">QR and Barcode Scanner</string>
     <string name="message">Place a barcode inside the viewfinder rectangle to scan it lol.</string>
 </resources>
