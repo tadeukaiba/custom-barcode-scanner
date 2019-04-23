@@ -19,12 +19,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-
 public class CustomBarcodeScanner extends CordovaPlugin {
 
     private CallbackContext callbackContext;
 
     private static final String TAG = "CustomBarcodeScanner";
+    static String TORCH_ON = "torchOn";
+    static String FORMATS = "formats";
 
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
@@ -49,8 +50,8 @@ public class CustomBarcodeScanner extends CordovaPlugin {
 
         List<String> formats = Collections.singletonList(IntentIntegrator.QR_CODE);
 
-        if (options.has(AnyOrientationActivity.FORMATS)) {
-            JSONArray jsonArray = options.optJSONArray(AnyOrientationActivity.FORMATS);
+        if (options.has(FORMATS)) {
+            JSONArray jsonArray = options.optJSONArray(FORMATS);
             formats = new ArrayList<String>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 formats.add(jsonArray.getString(i));
@@ -60,9 +61,9 @@ public class CustomBarcodeScanner extends CordovaPlugin {
         IntentIntegrator integrator = new IntentIntegrator(this.cordova.getActivity());
         integrator.setDesiredBarcodeFormats(formats);
         integrator.setBeepEnabled(false);
-        integrator.setCaptureActivity(AnyOrientationActivity.class);
+        integrator.setCaptureActivity(ScannerActivity.class);
         integrator.setPrompt("Alinhe o código para a leitura.");
-        integrator.addExtra(AnyOrientationActivity.TORCH_ON, options.optBoolean(AnyOrientationActivity.TORCH_ON, false));
+        integrator.addExtra(TORCH_ON, options.optBoolean(TORCH_ON, false));
 
         integrator.initiateScan();
 
