@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-custom-scanner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/umd/custom-barcode-scanner.js",
   "typings": "dist/esm/custom-barcode-scanner.d.ts",
   "module": "dist/esm/custom-barcode-scanner.js",
