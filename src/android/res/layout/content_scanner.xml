@@ -15,14 +15,31 @@
         android:layout_height="match_parent"
         app:zxing_scanner_layout="@layout/custom_scanner" />
 
-    <!--  FlashLight Button-->
+    <Button
+        android:id="@+id/switch_flashlight"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/lightbulb_off"
+        android:onClick="switchFlashlight" />
+
+    <Button
+        android:id="@+id/switch_camera"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/switch_camera"
+        android:onClick="switchCamera" />
+
+    <!--  Custom Button-->
     <Button
         android:id="@+id/switch_flashlight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/turn_off_flashlight" />
+        android:text="teste"
+        android:background="@drawable/rounded_button"/>
 
 
 </RelativeLayout>
