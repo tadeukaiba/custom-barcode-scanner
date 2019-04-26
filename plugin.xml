@@ -43,6 +43,7 @@
     <source-file src="src/android/res/drawable/lightbulb_off.png" target-dir="res/drawable" />
     <source-file src="src/android/res/drawable/lightbulb_on.png" target-dir="res/drawable" />
     <source-file src="src/android/res/drawable/switch_camera.png" target-dir="res/drawable" />
+    <source-file src="src/android/res/drawable/close_camera.png" target-dir="res/drawable" />
     <source-file src="src/android/res/drawable/rounded_button.xml" target-dir="res/drawable" />
 
     <framework src="src/android/custom-barcode-scanner.gradle" custom="true" type="gradleReference" />
