@@ -22,7 +22,7 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/lightbulb_off"
         android:onClick="switchFlashlight"
-        android:layout_margin="20dp"/>
+        android:layout_margin="15dp"/>
 
     <Button
         android:id="@+id/switch_camera"
@@ -31,7 +31,7 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/switch_camera"
         android:onClick="switchCamera"
-        android:layout_margin="20dp"/>
+        android:layout_margin="15dp"/>
 
     <!--  Custom Button-->
     <Button
