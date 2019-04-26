@@ -143,7 +143,7 @@ import com.journeyapps.barcodescanner.camera.CameraManager;
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         int width = (int) (displayMetrics.widthPixels * .90);
-        int height = (int) (displayMetrics.heightPixels * .85);
+        int height = (int) (displayMetrics.heightPixels * .80);
         Size size = new Size(width, height);
 
         int barcodeViewId = getResourceIdentifier("zxing_barcode_surface", "id");
