@@ -37,6 +37,8 @@ import com.journeyapps.barcodescanner.camera.CameraManager;
         Toolbar toolbar = findViewById(getResourceIdentifier("toolbar", "id"));
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Ler código");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(getResourceIdentifier("close_camera","drawable"));
 
         //Initialize barcode scanner view
         barcodeScannerView = findViewById(getResourceIdentifier("zxing_barcode_scanner", "id"));
