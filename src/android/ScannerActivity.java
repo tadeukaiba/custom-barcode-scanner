@@ -22,13 +22,19 @@ import com.journeyapps.barcodescanner.Size;
 import com.journeyapps.barcodescanner.camera.CameraManager;
 
 
-    public class ScannerActivity extends AppCompatActivity implements
-        DecoratedBarcodeView.TorchListener {
+public class ScannerActivity extends AppCompatActivity implements
+    DecoratedBarcodeView.TorchListener {
 
-    private CaptureManager capture;
+    static String TORCH_ON = "torchOn";
+    static String FORMATS = "formats";
+
     private DecoratedBarcodeView barcodeScannerView;
+    private CaptureManager capture;
+    private CameraManager cameraManager;
+
+    private boolean isTorchOn = false;
     private Button switchFlashlightButton;
-    private boolean isFlashLightOn = false;
+    private Button switchCameraButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,51 +50,46 @@ import com.journeyapps.barcodescanner.camera.CameraManager;
         barcodeScannerView = findViewById(getResourceIdentifier("zxing_barcode_scanner", "id"));
         calculateFrameSize(barcodeScannerView);
 
-        //set torch listener
-        barcodeScannerView.setTorchListener(this);
-
-        //switch flashlight button
-        switchFlashlightButton = (Button) findViewById(getResourceIdentifier("switch_flashlight", "id"));
-
-        // if the device does not have flashlight in its camera,
-        // then remove the switch flashlight button...
-        if (!hasFlash()) {
-            switchFlashlightButton.setVisibility(View.GONE);
-        } else {
-            switchFlashlightButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    switchFlashlight();
-                }
-            });
-        }
-
         //start capture
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.decode();
     }
 
-
-    /**
-     * Check if the device's camera has a Flashlight.
-     *
-     * @return true if there is Flashlight, otherwise false.
-     */
-    private boolean hasFlash() {
-        return getApplicationContext().getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    private void setTorchButton() {
+        barcodeScannerView.setTorchListener(this);
+        this.switchFlashlightButton = findViewById(getResourceIdentifier("switch_flashlight", "id"));
+        if (hasFlash()){
+            if (getIntent().getBooleanExtra(TORCH_ON, false)) {
+                barcodeScannerView.setTorchOn();
+            }
+        } else {
+            switchFlashlightButton.setVisibility(View.GONE);
+        }
     }
 
-    public void switchFlashlight() {
-        if (isFlashLightOn) {
-            barcodeScannerView.setTorchOff();
-            isFlashLightOn = false;
-        } else {
-            barcodeScannerView.setTorchOn();
-            isFlashLightOn = true;
-        }
+    private void setSwitchCameraButton() {
+        switchCameraButton = findViewById(getResourceIdentifier("switch_camera", "id"));
+        if (!hasFrontalCamera()) switchCameraButton.setVisibility(View.GONE);
+    }
 
+    public void switchCamera(View view){
+        int reqCamId = getIntent().getIntExtra("SCAN_CAMERA_ID", -1);
+        getIntent().putExtra("SCAN_CAMERA_ID", reqCamId == 1 ? 0 : 1);
+        recreate();
+    }
+
+    private boolean hasFlash() {
+        return getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    }
+
+    private boolean hasFrontalCamera() {
+        return getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    }
+
+    public void switchFlashlight(View view) {
+        if (isTorchOn) barcodeScannerView.setTorchOff();
+        else barcodeScannerView.setTorchOn();
     }
 
     @Override
