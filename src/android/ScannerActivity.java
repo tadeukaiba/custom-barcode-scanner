@@ -97,12 +97,14 @@ public class ScannerActivity extends AppCompatActivity implements
 
     @Override
     public void onTorchOn() {
-        switchFlashlightButton.setText(getResourceIdentifier("turn_off_flashlight", "string"));
+        isTorchOn = true;
+        switchFlashlightButton.setBackgroundResource(getResourceIdentifier("lightbulb_on", "drawable"));
     }
 
     @Override
     public void onTorchOff() {
-        switchFlashlightButton.setText(getResourceIdentifier("turn_on_flashlight", "string"));
+        isTorchOn = false;
+        switchFlashlightButton.setBackgroundResource(getResourceIdentifier("lightbulb_off", "drawable"));
     }
 
     @Override
