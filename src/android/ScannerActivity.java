@@ -50,6 +50,9 @@ public class ScannerActivity extends AppCompatActivity implements
         barcodeScannerView = findViewById(getResourceIdentifier("zxing_barcode_scanner", "id"));
         calculateFrameSize(barcodeScannerView);
 
+        setTorchButton();
+        setSwitchCameraButton();
+
         //start capture
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);
