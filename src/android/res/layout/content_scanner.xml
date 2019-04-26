@@ -19,17 +19,19 @@
         android:id="@+id/switch_flashlight"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:background="@drawable/lightbulb_off"
-        android:onClick="switchFlashlight" />
+        android:onClick="switchFlashlight"
+        android:paddingTop="20dp"/>
 
     <Button
         android:id="@+id/switch_camera"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:background="@drawable/switch_camera"
-        android:onClick="switchCamera" />
+        android:onClick="switchCamera"
+        android:paddingTop="20dp"/>
 
     <!--  Custom Button-->
     <Button
@@ -38,7 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="teste"
+        android:text="Próximo"
+        android:paddingBottom="20dp"
         android:background="@drawable/rounded_button"/>
 
 
