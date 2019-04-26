@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="br.com.mbamobi.ScannerActivity"
     tools:showIn="@layout/activity_scanner">
@@ -21,8 +23,7 @@
         android:layout_height="25dp"
         android:layout_alignParentEnd="true"
         android:background="@drawable/lightbulb_off"
-        android:onClick="switchFlashlight"
-        android:paddingTop="20dp"/>
+        android:onClick="switchFlashlight"/>
 
     <Button
         android:id="@+id/switch_camera"
@@ -30,8 +31,7 @@
         android:layout_height="25dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/switch_camera"
-        android:onClick="switchCamera"
-        android:paddingTop="20dp"/>
+        android:onClick="switchCamera"/>
 
     <!--  Custom Button-->
     <Button
@@ -41,7 +41,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="Próximo"
-        android:paddingBottom="20dp"
+        android:layout_margin="15dp"
         android:background="@drawable/rounded_button"/>
 
 
