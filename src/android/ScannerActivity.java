@@ -36,6 +36,7 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
         //Initialize barcode scanner view
         barcodeScannerView = findViewById(getResourceIdentifier("zxing_barcode_scanner", "id"));
+        calculateFrameSize(barcodeScannerView);
 
         //set torch listener
         barcodeScannerView.setTorchListener(this);
@@ -129,6 +130,19 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
         Resources resources = app.getResources();
 
         return resources.getIdentifier(name, type, package_name);
+    }
+
+    private void calculateFrameSize(DecoratedBarcodeView decoratedBarcodeView) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int width = (int) (displayMetrics.widthPixels * .90);
+        int height = (int) (displayMetrics.heightPixels * .85);
+        Size size = new Size(width, height);
+
+        int barcodeViewId = getResourceIdentifier("zxing_barcode_surface", "id");
+        BarcodeView barcodeView = decoratedBarcodeView.findViewById(barcodeViewId);
+        barcodeView.setFramingRectSize(size);
     }
 
 }
