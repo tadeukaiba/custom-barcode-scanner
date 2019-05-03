@@ -88,6 +88,15 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
             // Start video capture.
             captureSession!.startRunning()
 
+            let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: 320, height: 44))
+            view.addSubview(navBar)
+            
+            let navItem = UINavigationItem(title: "Kaiba")
+            let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: nil, action: #selector(selectorName:))
+            navItem.rightBarButtonItem = doneItem
+
+            navBar.setItems([navItem], animated: false)
+
             cancelButton = UIButton(frame: CGRect(x: 16, y: 45, width: 80, height: 30))
             cancelButton?.layer.borderWidth = 1
             cancelButton?.layer.borderColor = UIColor.white.cgColor
