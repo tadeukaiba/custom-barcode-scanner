@@ -24,7 +24,6 @@ public class CustomBarcodeScanner extends CordovaPlugin {
     private CallbackContext callbackContext;
 
     private static final String TAG = "CustomBarcodeScanner";
-    static String TORCH_ON = "torchOn";
     static String FORMATS = "formats";
 
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -63,7 +62,11 @@ public class CustomBarcodeScanner extends CordovaPlugin {
         integrator.setBeepEnabled(false);
         integrator.setCaptureActivity(ScannerActivity.class);
         integrator.setPrompt("Alinhe o código para a leitura.");
-        integrator.addExtra(TORCH_ON, options.optBoolean(TORCH_ON, false));
+        integrator.addExtra(TORCH_ON, options.optBoolean(ScannerActivity.TORCH_ON, false));
+        integrator.addExtra(TITLE, options.optString(ScannerActivity.TITLE, null));
+        integrator.addExtra(JUMP_BUTTON, options.optBoolean(ScannerActivity.JUMP_BUTTON, false));
+        integrator.addExtra(NEXT_BUTTON, options.optBoolean(ScannerActivity.NEXT_BUTTON, false));
+        integrator.addExtra(SELECT_BUTTON, options.optBoolean(ScannerActivity.SELECT_BUTTON, false));
 
         integrator.initiateScan();
 

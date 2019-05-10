@@ -27,6 +27,10 @@ public class ScannerActivity extends AppCompatActivity implements
 
     static String TORCH_ON = "torchOn";
     static String FORMATS = "formats";
+    static String TITLE = "title";
+    static String JUMP_BUTTON = "jumpButton";
+    static String NEXT_BUTTON = "nextButton";
+    static String SELECT_BUTTON = "selectButton";
 
     private DecoratedBarcodeView barcodeScannerView;
     private CaptureManager capture;
@@ -42,9 +46,11 @@ public class ScannerActivity extends AppCompatActivity implements
         setContentView(getResourceIdentifier("activity_scanner", "layout"));
         Toolbar toolbar = findViewById(getResourceIdentifier("toolbar", "id"));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Ler código");
+        String title = getIntent().getBooleanExtra(TITLE, "Ler código");
+        getSupportActionBar().setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResourceIdentifier("close_camera","drawable"));
+
 
         //Initialize barcode scanner view
         barcodeScannerView = findViewById(getResourceIdentifier("zxing_barcode_scanner", "id"));
