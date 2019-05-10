@@ -11,6 +11,9 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
     var cancelButton: UIButton?
     var flashButton: UIButton?
     var switchCameraButton: UIButton?
+    var actionButton: UIButton?
+    var subTitle: UILabel?
+    var navbar : UINavigationBar?
 
     var currentCamera: Int = 0;
     var frontCamera: AVCaptureDevice?
@@ -87,24 +90,27 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
 
             // Start video capture.
             captureSession!.startRunning()
-
-            let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: 320, height: 44))
-            view.addSubview(navBar)
             
-            let navItem = UINavigationItem(title: "Kaiba")
-            let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: nil, action: #selector(selectorName:))
-            navItem.rightBarButtonItem = doneItem
-
-            navBar.setItems([navItem], animated: false)
-
-            cancelButton = UIButton(frame: CGRect(x: 16, y: 45, width: 80, height: 30))
-            cancelButton?.layer.borderWidth = 1
-            cancelButton?.layer.borderColor = UIColor.white.cgColor
-            cancelButton?.layer.cornerRadius = CGFloat(14)
-            cancelButton?.setTitle("Voltar", for: .normal)
-            cancelButton?.titleLabel?.font = UIFont(name: "Apple SD Gothic Neo", size: 14);
-            cancelButton?.addTarget(self, action: #selector(cancelButtonAction), for: .touchUpInside)
-            view.addSubview(cancelButton!)
+            //Navbar
+            addNavigationBar()
+            
+            //Subtitle
+            subTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 250, height: 21))
+            subTitle?.center = CGPoint(x: view.frame.size.width / 2, y: 85)
+            subTitle?.textAlignment = .center
+            subTitle?.text = "Alinhe o código para leitura"
+            subTitle?.textColor = UIColor.white
+            view.addSubview(subTitle!)
+            
+            //ActionButton
+            actionButton = UIButton(type: .custom)
+            actionButton?.frame = CGRect(x: (view.frame.size.width / 2) - 115, y: view.frame.size.height - 50, width: 230, height: 40)
+            actionButton?.layer.cornerRadius = 20
+            actionButton?.clipsToBounds = true
+            actionButton?.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
+            actionButton?.setTitle("Próximo", for: .normal)
+            actionButton?.addTarget(self, action: #selector(cancelButtonAction), for: .touchUpInside)
+            view.addSubview(actionButton!)
 
             let bundleUrl = Bundle.main.url(forResource: "CustomBarcodeScanner", withExtension: "bundle")
             let bundle = Bundle.init(url: bundleUrl!)
@@ -115,12 +121,14 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
             let flashOffImagePath = bundle?.path(forResource: "lightbulb_off", ofType: "png")
             flashOffImage = UIImage.init(contentsOfFile: flashOffImagePath!)
 
-            flashButton = UIButton(frame: CGRect(x: 16, y: view.frame.size.height - 60, width: 50, height: 50))
+            //flashButton = UIButton(frame: CGRect(x: 16, y: view.frame.size.height - 60, width: 25, height: 25))
+            flashButton = UIButton(frame: CGRect(x: view.frame.size.width - 40, y: 75, width: 25, height: 25))
             flashButton?.setImage(flashOffImage, for: .normal)
             flashButton?.addTarget(self, action: #selector(flashButtonAction), for: .touchUpInside)
             view.addSubview(flashButton!)
 
-            switchCameraButton = UIButton(frame: CGRect(x: view.frame.size.width - 66, y: view.frame.size.height - 60, width: 50, height: 50))
+            //switchCameraButton = UIButton(frame: CGRect(x: view.frame.size.width - 66, y: view.frame.size.height - 60, width: 25, height: 25))
+            switchCameraButton = UIButton(frame: CGRect(x: 20, y: 75, width: 25, height: 25))
             let switchImagePath = bundle?.path(forResource: "switch_camera", ofType: "png")
             let switchImage = UIImage.init(contentsOfFile: switchImagePath!)
             switchCameraButton?.setImage(switchImage, for: .normal)
@@ -129,11 +137,11 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
 
             // Initialize QR Code Frame to highlight the QR code
             qrCodeFrameView = UIView()
-            qrCodeFrameView?.layer.borderColor = UIColor.red.cgColor
+            qrCodeFrameView?.layer.borderColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
             qrCodeFrameView?.layer.borderWidth = 2
-            qrCodeFrameView?.frame = CGRect(x: 30, y: 90, width: view.frame.size.width - 60, height: view.frame.size.height - 160)
+            qrCodeFrameView?.frame = CGRect(x: 30, y: 110, width: view.frame.size.width - 60, height: view.frame.size.height - 170)
             view.addSubview(qrCodeFrameView!)
-            view.bringSubviewToFront(qrCodeFrameView!)
+            view.bringSubview(toFront: qrCodeFrameView!)
 
             let torchOn:Bool = options.object(forKey: "torchOn") as! Bool
             if (torchOn) {
@@ -146,6 +154,48 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
             self.sendResultFailure(error: error)
             return
         }
+    }
+    
+    @objc func done() {
+        
+    }
+    
+    private func addNavigationBar(){
+        let view: UIView = self.webView.superview!
+        let height: CGFloat = 40
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height;
+        navbar = UINavigationBar(frame: CGRect(x: 0, y: statusBarHeight, width: UIScreen.main.bounds.width, height: height))
+        navbar?.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
+        navbar?.barTintColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
+        navbar?.isTranslucent = false;
+        navbar?.delegate = self as? UINavigationBarDelegate
+        
+        let bundleUrl = Bundle.main.url(forResource: "CustomBarcodeScanner", withExtension: "bundle")
+        let bundle = Bundle.init(url: bundleUrl!)
+        
+        let closeCameraButton = UIButton(type: .custom)
+        let closeCameraPath = bundle?.path(forResource: "close_camera", ofType: "png")
+        let closeCamera = UIImage.init(contentsOfFile: closeCameraPath!)
+        closeCameraButton.frame = CGRect(x: 0.0, y: 0.0, width: 25, height: 25)
+        closeCameraButton.setImage(closeCamera, for: .normal)
+        closeCameraButton.addTarget(self, action: #selector(cancelButtonAction), for: .touchUpInside)
+        let closeCameraButtonNav = UIBarButtonItem(customView: closeCameraButton)
+        let currWidth = closeCameraButtonNav.customView?.widthAnchor.constraint(equalToConstant: 25)
+        currWidth?.isActive = true
+        let currHeight = closeCameraButtonNav.customView?.heightAnchor.constraint(equalToConstant: 25)
+        currHeight?.isActive = true
+        
+        
+        let navItem = UINavigationItem(title: "Ler Código")
+        navbar?.setItems([navItem], animated: false)
+        navbar?.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navItem.leftBarButtonItem = closeCameraButtonNav
+        view.addSubview(navbar!)
+        
+        let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
+        let statusBarColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
+        statusBarView.backgroundColor = statusBarColor
+        view.addSubview(statusBarView)
     }
 
     func createCaptureDeviceInput() throws -> AVCaptureDeviceInput {
@@ -283,12 +333,18 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
         if(cancelButton != nil) {cancelButton!.removeFromSuperview()}
         if(flashButton != nil) {flashButton!.removeFromSuperview()}
         if(switchCameraButton != nil) {switchCameraButton!.removeFromSuperview()}
+        if(navbar != nil) {navbar!.removeFromSuperview()}
+        if(actionButton != nil) {actionButton!.removeFromSuperview()}
+        if(subTitle != nil) {subTitle!.removeFromSuperview()}
 
         captureSession = nil
         videoPreviewLayer = nil
         cancelButton = nil
         flashButton = nil
         switchCameraButton = nil
+        navbar = nil
+        actionButton = nil
+        subTitle = nil
     }
 
     func sendResultFailure(error: Error? = nil, msg: String = ""){
