@@ -62,11 +62,11 @@ public class CustomBarcodeScanner extends CordovaPlugin {
         integrator.setBeepEnabled(false);
         integrator.setCaptureActivity(ScannerActivity.class);
         integrator.setPrompt("Alinhe o código para a leitura.");
-        integrator.addExtra(TORCH_ON, options.optBoolean(ScannerActivity.TORCH_ON, false));
-        integrator.addExtra(TITLE, options.optString(ScannerActivity.TITLE, null));
-        integrator.addExtra(JUMP_BUTTON, options.optBoolean(ScannerActivity.JUMP_BUTTON, false));
-        integrator.addExtra(NEXT_BUTTON, options.optBoolean(ScannerActivity.NEXT_BUTTON, false));
-        integrator.addExtra(SELECT_BUTTON, options.optBoolean(ScannerActivity.SELECT_BUTTON, false));
+        integrator.addExtra(ScannerActivity.TORCH_ON, options.optBoolean(ScannerActivity.TORCH_ON, false));
+        integrator.addExtra(ScannerActivity.TITLE, options.optString(ScannerActivity.TITLE, null));
+        integrator.addExtra(ScannerActivity.JUMP_BUTTON, options.optBoolean(ScannerActivity.JUMP_BUTTON, false));
+        integrator.addExtra(ScannerActivity.NEXT_BUTTON, options.optBoolean(ScannerActivity.NEXT_BUTTON, false));
+        integrator.addExtra(ScannerActivity.SELECT_BUTTON, options.optBoolean(ScannerActivity.SELECT_BUTTON, false));
 
         integrator.initiateScan();
 

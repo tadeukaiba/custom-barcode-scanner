@@ -46,7 +46,7 @@ public class ScannerActivity extends AppCompatActivity implements
         setContentView(getResourceIdentifier("activity_scanner", "layout"));
         Toolbar toolbar = findViewById(getResourceIdentifier("toolbar", "id"));
         setSupportActionBar(toolbar);
-        String title = getIntent().getBooleanExtra(TITLE, "Ler código");
+        String title = getIntent().getStringExtra(TITLE, "Ler código");
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResourceIdentifier("close_camera","drawable"));
