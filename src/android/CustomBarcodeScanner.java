@@ -61,7 +61,8 @@ public class CustomBarcodeScanner extends CordovaPlugin {
         integrator.setDesiredBarcodeFormats(formats);
         integrator.setBeepEnabled(false);
         integrator.setCaptureActivity(ScannerActivity.class);
-        integrator.setPrompt("Alinhe o código para a leitura.");
+        integrator.setOrientationLocked(false);
+        integrator.setPrompt(options.optString(ScannerActivity.PROMPT));
         integrator.addExtra(ScannerActivity.TORCH_ON, options.optBoolean(ScannerActivity.TORCH_ON, false));
         integrator.addExtra(ScannerActivity.TITLE, options.optString(ScannerActivity.TITLE, null));
         integrator.addExtra(ScannerActivity.JUMP_BUTTON, options.optBoolean(ScannerActivity.JUMP_BUTTON, false));
@@ -88,6 +89,16 @@ public class CustomBarcodeScanner extends CordovaPlugin {
             }
 
         } else {
+            if (ScannerActivity.JUMP_RESULT == resultCode) {
+                callbackContext.success("jump");
+            } else if (ScannerActivity.NEXT_RESULT == resultCode) {
+                callbackContext.success("next");
+            } else if (ScannerActivity.SELECT_RESULT == resultCode) {
+                callbackContext.success("select");
+            } else if (ScannerActivity.EXIT_RESULT == resultCode) {
+                callbackContext.success("cancel");
+            }
+
             callbackContext.success("");
         }
     }

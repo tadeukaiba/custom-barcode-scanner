@@ -1,10 +1,7 @@
 package br.com.mbamobi;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.res.Resources;
-import android.hardware.Camera;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 
 import android.content.pm.PackageManager;
@@ -14,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.journeyapps.barcodescanner.BarcodeView;
 import com.journeyapps.barcodescanner.CaptureManager;
@@ -28,17 +26,30 @@ public class ScannerActivity extends AppCompatActivity implements
     static String TORCH_ON = "torchOn";
     static String FORMATS = "formats";
     static String TITLE = "title";
+    static String PROMPT = "prompt";
     static String JUMP_BUTTON = "jumpButton";
     static String NEXT_BUTTON = "nextButton";
     static String SELECT_BUTTON = "selectButton";
 
+    static int JUMP_RESULT = 77777;
+    static int NEXT_RESULT = 88888;
+    static int SELECT_RESULT = 99999;
+    static int EXIT_RESULT = 66666;
+
     private DecoratedBarcodeView barcodeScannerView;
     private CaptureManager capture;
-    private CameraManager cameraManager;
 
     private boolean isTorchOn = false;
     private Button switchFlashlightButton;
     private Button switchCameraButton;
+    private Button jumpButton;
+    private Button selectButton;
+    private ImageView nextButton;
+
+    private boolean isJumpButton = false;
+    private boolean isNextButton = false;
+    private boolean isSelectButton = false;
+    private boolean haveButtons = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +61,66 @@ public class ScannerActivity extends AppCompatActivity implements
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResourceIdentifier("close_camera","drawable"));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(EXIT_RESULT);
+                finish();
+            }
+        });
 
 
         //Initialize barcode scanner view
         barcodeScannerView = findViewById(getResourceIdentifier("zxing_barcode_scanner", "id"));
         calculateFrameSize(barcodeScannerView);
 
+        getOptionProperties();
         setTorchButton();
         setSwitchCameraButton();
+        setJumpButton();
+        setSelectButton();
+        setNextButton();
 
         //start capture
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.decode();
+    }
+
+    private void getOptionProperties() {
+        this.isJumpButton = getIntent().getBooleanExtra(JUMP_BUTTON, false);
+        this.isNextButton = getIntent().getBooleanExtra(NEXT_BUTTON, false);
+        this.isSelectButton = getIntent().getBooleanExtra(SELECT_BUTTON, false);
+        this.haveButtons = this.isJumpButton && this.isNextButton && this.isSelectButton;
+    }
+
+    private void setJumpButton() {
+        this.jumpButton = findViewById(getResourceIdentifier("jump_button", "id"));
+        if(this.isJumpButton) {
+            this.jumpButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setNextButton() {
+        this.nextButton = findViewById(getResourceIdentifier("next_button", "id"));
+        if(this.isNextButton) {
+            this.nextButton.setVisibility(View.VISIBLE);
+            this.jumpButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setSelectButton() {
+        this.selectButton = findViewById(getResourceIdentifier("select_button", "id"));
+        if(this.isSelectButton) {
+            this.selectButton.setVisibility(View.VISIBLE);
+
+            if(this.isJumpButton) {
+                Button jumpRightButton = findViewById(getResourceIdentifier("jump_right_button", "id"));
+                this.jumpButton.setVisibility(View.INVISIBLE);
+                jumpRightButton.setVisibility(View.VISIBLE);
+            }
+        }
+
     }
 
     private void setTorchButton() {
@@ -99,6 +157,21 @@ public class ScannerActivity extends AppCompatActivity implements
     public void switchFlashlight(View view) {
         if (isTorchOn) barcodeScannerView.setTorchOff();
         else barcodeScannerView.setTorchOn();
+    }
+
+    public void jumpButtonClick(View view) {
+        setResult(JUMP_RESULT);
+        finish();
+    }
+
+    public void nextButtonClick(View view) {
+        setResult(NEXT_RESULT);
+        finish();
+    }
+
+    public void selectButtonClick(View view) {
+        setResult(SELECT_RESULT);
+        finish();
     }
 
     @Override

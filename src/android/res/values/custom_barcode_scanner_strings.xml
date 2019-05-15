@@ -18,4 +18,8 @@
     <color name="custom_barcode_torch_color">#f5ea6c</color>
     <string name="title_activity_main">QR and Barcode Scanner</string>
     <string name="message">Place a barcode inside the viewfinder rectangle to scan it lol.</string>
+    <string name="jump_text">
+        <u>Pular passo</u>
+    </string>
+    <string name="select_list">Selecionar na lista</string>
 </resources>
