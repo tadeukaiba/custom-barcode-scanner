@@ -30,11 +30,14 @@ public class ScannerActivity extends AppCompatActivity implements
     static String JUMP_BUTTON = "jumpButton";
     static String NEXT_BUTTON = "nextButton";
     static String SELECT_BUTTON = "selectButton";
+    static String CUSTOM_BUTTON = "customButton";
+    static String CUSTOM_BUTTON_LABEL = "customButtonLabel";
 
     static int JUMP_RESULT = 77777;
     static int NEXT_RESULT = 88888;
     static int SELECT_RESULT = 99999;
     static int EXIT_RESULT = 66666;
+    static int CUSTOM_RESULT = 12345;
 
     private DecoratedBarcodeView barcodeScannerView;
     private CaptureManager capture;
@@ -43,12 +46,14 @@ public class ScannerActivity extends AppCompatActivity implements
     private Button switchFlashlightButton;
     private Button switchCameraButton;
     private Button jumpButton;
+    private Button customButton;
     private Button selectButton;
     private ImageView nextButton;
 
     private boolean isJumpButton = false;
     private boolean isNextButton = false;
     private boolean isSelectButton = false;
+    private boolean isCustomButton = false;
     private boolean haveButtons = false;
 
     @Override
@@ -80,6 +85,7 @@ public class ScannerActivity extends AppCompatActivity implements
         setJumpButton();
         setSelectButton();
         setNextButton();
+        setCustomButton();
 
         //start capture
         capture = new CaptureManager(this, barcodeScannerView);
@@ -91,11 +97,14 @@ public class ScannerActivity extends AppCompatActivity implements
         this.isJumpButton = getIntent().getBooleanExtra(JUMP_BUTTON, false);
         this.isNextButton = getIntent().getBooleanExtra(NEXT_BUTTON, false);
         this.isSelectButton = getIntent().getBooleanExtra(SELECT_BUTTON, false);
+        this.isCustomButton = getIntent().getBooleanExtra(CUSTOM_BUTTON, false);
         this.haveButtons = this.isJumpButton && this.isNextButton && this.isSelectButton;
     }
 
     private void setJumpButton() {
         this.jumpButton = findViewById(getResourceIdentifier("jump_button", "id"));
+        String label = getIntent().getStringExtra(CUSTOM_BUTTON_LABEL);
+        this.jumpButton.setText(label);
         if(this.isJumpButton) {
             this.jumpButton.setVisibility(View.VISIBLE);
         }
@@ -121,6 +130,13 @@ public class ScannerActivity extends AppCompatActivity implements
             }
         }
 
+    }
+
+    private void setCustomButton() {
+        this.customButton = findViewById(getResourceIdentifier("custom_button", "id"));
+        if(this.isCustomButton) {
+            this.customButton.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setTorchButton() {
@@ -171,6 +187,11 @@ public class ScannerActivity extends AppCompatActivity implements
 
     public void selectButtonClick(View view) {
         setResult(SELECT_RESULT);
+        finish();
+    }
+
+    public void customButtonClick(View view) {
+        setResult(CUSTOM_RESULT);
         finish();
     }
 
