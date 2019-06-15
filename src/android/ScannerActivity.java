@@ -103,8 +103,6 @@ public class ScannerActivity extends AppCompatActivity implements
 
     private void setJumpButton() {
         this.jumpButton = findViewById(getResourceIdentifier("jump_button", "id"));
-        String label = getIntent().getStringExtra(CUSTOM_BUTTON_LABEL);
-        this.jumpButton.setText(label);
         if(this.isJumpButton) {
             this.jumpButton.setVisibility(View.VISIBLE);
         }
@@ -134,6 +132,8 @@ public class ScannerActivity extends AppCompatActivity implements
 
     private void setCustomButton() {
         this.customButton = findViewById(getResourceIdentifier("custom_button", "id"));
+        String label = getIntent().getStringExtra(CUSTOM_BUTTON_LABEL);
+        this.customButton.setText(label);
         if(this.isCustomButton) {
             this.customButton.setVisibility(View.VISIBLE);
         }
