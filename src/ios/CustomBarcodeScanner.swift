@@ -168,7 +168,7 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
             if(isNextButton) {
                 actionButton = UIButton(type: .custom)
                 actionButton?.frame = CGRect(x: view.frame.size.width - 80, y: view.frame.size.height - 55, width: 50, height: 50)
-                actionButton?.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
+                actionButton?.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
                 let actWidth = actionButton?.bounds.size.width
                 actionButton?.layer.cornerRadius = 0.5 * actWidth!
                 actionButton?.clipsToBounds = true
@@ -182,7 +182,7 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
             
             // Initialize QR Code Frame to highlight the QR code
             qrCodeFrameView = UIView()
-            qrCodeFrameView?.layer.borderColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
+            qrCodeFrameView?.layer.borderColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
             qrCodeFrameView?.layer.borderWidth = 2
             qrCodeFrameView?.frame = CGRect(x: 30, y: 110, width: view.frame.size.width - 60, height: view.frame.size.height - 170)
             view.addSubview(qrCodeFrameView!)
@@ -210,8 +210,8 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
         let height: CGFloat = 40
         let statusBarHeight = UIApplication.shared.statusBarFrame.height;
         navbar = UINavigationBar(frame: CGRect(x: 0, y: statusBarHeight, width: UIScreen.main.bounds.width, height: height))
-        navbar?.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
-        navbar?.barTintColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
+        navbar?.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+        navbar?.barTintColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
         navbar?.isTranslucent = false;
         navbar?.delegate = self as? UINavigationBarDelegate
         
