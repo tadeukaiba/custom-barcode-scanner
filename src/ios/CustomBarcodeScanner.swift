@@ -143,7 +143,7 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
                 let yourAttributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.systemFont(ofSize: 14),
                     .foregroundColor: UIColor.white,
-                    .underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
+                    .underlineStyle: NSUnderlineStyle.single.rawValue]
                 let attributeString = NSMutableAttributedString(string: "Pular passo", attributes: yourAttributes)
                 jumpButton?.setAttributedTitle(attributeString, for: .normal)
                 jumpButton?.addTarget(self, action: #selector(jumpButtonAction), for: .touchUpInside)
@@ -159,7 +159,7 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
                 selectButton?.setImage(selectImage, for: .normal)
                 selectButton?.setTitle("Selecionar na lista", for: .normal)
                 selectButton?.titleLabel!.font = UIFont(name: (selectButton?.titleLabel?.font.fontName)!, size: 14)
-                selectButton?.imageEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 20)
+                selectButton?.imageEdgeInsets = UIEdgeInsets(top: 10,left: 10,bottom: 10,right: 20)
                 selectButton?.addTarget(self, action: #selector(selectButtonAction), for: .touchUpInside)
                 view.addSubview(selectButton!)
             }
@@ -175,7 +175,7 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
                 let nextImagePath = bundle?.path(forResource: "next_arrow", ofType: "png")
                 let nextImage = UIImage.init(contentsOfFile: nextImagePath!)
                 actionButton?.setImage(nextImage, for: .normal)
-                actionButton?.imageEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+                actionButton?.imageEdgeInsets = UIEdgeInsets(top: 10,left: 10,bottom: 10,right: 10)
                 actionButton?.addTarget(self, action: #selector(nextButtonAction), for: .touchUpInside)
                 view.addSubview(actionButton!)
             }
@@ -186,7 +186,7 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
             qrCodeFrameView?.layer.borderWidth = 2
             qrCodeFrameView?.frame = CGRect(x: 30, y: 110, width: view.frame.size.width - 60, height: view.frame.size.height - 170)
             view.addSubview(qrCodeFrameView!)
-            view.bringSubview(toFront: qrCodeFrameView!)
+            view.bringSubviewToFront(qrCodeFrameView!)
 
             let torchOn:Bool = options.object(forKey: "torchOn") as! Bool
             if (torchOn) {
