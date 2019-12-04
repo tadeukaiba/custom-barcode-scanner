@@ -346,7 +346,7 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
     @objc(customButtonAction:)
     func customButtonAction(sender: UIButton!) {
         self.stopCapture()
-        self.sendResultSuccess(msg: "custom")
+        self.sendResultSuccess(msg: "custom_result")
     }
 
     @objc(selectButtonAction:)
