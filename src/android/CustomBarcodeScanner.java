@@ -115,4 +115,8 @@ public class CustomBarcodeScanner extends CordovaPlugin {
         callbackContext.error(msg);
     }
 
+    public void onBackPressed() {
+        callbackContext.success("cancel");
+    }
+
 }
