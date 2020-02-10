@@ -32,5 +32,20 @@
       "android",
       "iOS"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielrf121/custom-barcode-scanner.git"
+  },
+  "keywords": [
+    "barcode",
+    "camera",
+    "scanner"
+  ],
+  "author": "Daniel Rodrigues",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielrf121/custom-barcode-scanner/issues"
+  },
+  "homepage": "https://github.com/danielrf121/custom-barcode-scanner#readme"
 }

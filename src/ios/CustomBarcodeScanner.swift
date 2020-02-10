@@ -12,6 +12,7 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
     var flashButton: UIButton?
     var switchCameraButton: UIButton?
     var actionButton: UIButton?
+    var customButton: UIButton?
     var subTitle: UILabel?
     var navbar : UINavigationBar?
     var jumpButton: UIButton?
@@ -83,11 +84,13 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
             let format: NSString = formats.object(at: 0) as! NSString
             let captureObjectType = format == "QR_CODE" ? AVMetadataObject.ObjectType.qr : AVMetadataObject.ObjectType.interleaved2of5
             captureMetadataOutput.metadataObjectTypes = [captureObjectType]
-            
+
             //GetParams
             let title:String = options.object(forKey: "title") as! String
             let prompt:String = options.object(forKey: "prompt") as! String
             let isJumpButton:Bool = options.object(forKey: "jumpButton") as! Bool
+            let isCustomButton:Bool = options.object(forKey: "customButton") as! Bool
+            let customLabel:String = options.object(forKey: "customButtonLabel") as! String
             let isNextButton:Bool = options.object(forKey: "nextButton") as! Bool
             let isSelectButton:Bool = options.object(forKey: "selectButton") as! Bool
 
@@ -99,13 +102,13 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
 
             // Start video capture.
             captureSession!.startRunning()
-            
+
             //Navbar
             addNavigationBar(title: title)
-            
+
             //Subtitle
             subTitle = UILabel(frame: CGRect(x: 0, y: 0, width: 250, height: 21))
-            subTitle?.center = CGPoint(x: view.frame.size.width / 2, y: 85)
+            subTitle?.center = CGPoint(x: view.frame.size.width / 2, y: 105)
             subTitle?.textAlignment = .center
             subTitle?.text = prompt
             subTitle?.textColor = UIColor.white
@@ -120,18 +123,18 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
             let flashOffImagePath = bundle?.path(forResource: "lightbulb_off", ofType: "png")
             flashOffImage = UIImage.init(contentsOfFile: flashOffImagePath!)
 
-            flashButton = UIButton(frame: CGRect(x: view.frame.size.width - 40, y: 75, width: 25, height: 25))
+            flashButton = UIButton(frame: CGRect(x: view.frame.size.width - 40, y: 100, width: 25, height: 25))
             flashButton?.setImage(flashOffImage, for: .normal)
             flashButton?.addTarget(self, action: #selector(flashButtonAction), for: .touchUpInside)
             view.addSubview(flashButton!)
 
-            switchCameraButton = UIButton(frame: CGRect(x: 20, y: 75, width: 25, height: 25))
+            switchCameraButton = UIButton(frame: CGRect(x: 20, y: 100, width: 25, height: 25))
             let switchImagePath = bundle?.path(forResource: "switch_camera", ofType: "png")
             let switchImage = UIImage.init(contentsOfFile: switchImagePath!)
             switchCameraButton?.setImage(switchImage, for: .normal)
             switchCameraButton?.addTarget(self, action: #selector(switchCameraButtonAction), for: .touchUpInside)
             view.addSubview(switchCameraButton!)
-            
+
             //jumpButton
             if(isJumpButton) {
                 jumpButton = UIButton(type: .custom)
@@ -143,13 +146,29 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
                 let yourAttributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.systemFont(ofSize: 14),
                     .foregroundColor: UIColor.white,
-                    .underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
+                    .underlineStyle: NSUnderlineStyle.single.rawValue]
                 let attributeString = NSMutableAttributedString(string: "Pular passo", attributes: yourAttributes)
                 jumpButton?.setAttributedTitle(attributeString, for: .normal)
                 jumpButton?.addTarget(self, action: #selector(jumpButtonAction), for: .touchUpInside)
                 view.addSubview(jumpButton!)
             }
-            
+
+            //customButton
+            if(isCustomButton) {
+                customButton = UIButton(type: .custom)
+                customButton?.frame = CGRect(x: (view.frame.size.width / 2) - 175, y: view.frame.size.height - 60, width: 350, height:40)
+                customButton?.layer.cornerRadius = 5
+                customButton?.backgroundColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
+                customButton?.clipsToBounds = true
+
+                let yourAttributes: [NSAttributedString.Key: Any] = [
+                    .font: UIFont.systemFont(ofSize: 14),
+                    .foregroundColor: UIColor.white]
+                let attributeString = NSMutableAttributedString(string: customLabel, attributes: yourAttributes)
+                customButton?.setAttributedTitle(attributeString, for: .normal)
+                customButton?.addTarget(self, action: #selector(customButtonAction), for: .touchUpInside)
+                view.addSubview(customButton!)
+            }
             //SelectButton
             if(isSelectButton) {
                 selectButton = UIButton(type: .custom)
@@ -159,11 +178,11 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
                 selectButton?.setImage(selectImage, for: .normal)
                 selectButton?.setTitle("Selecionar na lista", for: .normal)
                 selectButton?.titleLabel!.font = UIFont(name: (selectButton?.titleLabel?.font.fontName)!, size: 14)
-                selectButton?.imageEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 20)
+                selectButton?.imageEdgeInsets = UIEdgeInsets(top: 10,left: 10,bottom: 10,right: 20)
                 selectButton?.addTarget(self, action: #selector(selectButtonAction), for: .touchUpInside)
                 view.addSubview(selectButton!)
             }
-            
+
             //NextButton
             if(isNextButton) {
                 actionButton = UIButton(type: .custom)
@@ -175,18 +194,18 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
                 let nextImagePath = bundle?.path(forResource: "next_arrow", ofType: "png")
                 let nextImage = UIImage.init(contentsOfFile: nextImagePath!)
                 actionButton?.setImage(nextImage, for: .normal)
-                actionButton?.imageEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+                actionButton?.imageEdgeInsets = UIEdgeInsets(top: 10,left: 10,bottom: 10,right: 10)
                 actionButton?.addTarget(self, action: #selector(nextButtonAction), for: .touchUpInside)
                 view.addSubview(actionButton!)
             }
-            
+
             // Initialize QR Code Frame to highlight the QR code
             qrCodeFrameView = UIView()
             qrCodeFrameView?.layer.borderColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
             qrCodeFrameView?.layer.borderWidth = 2
-            qrCodeFrameView?.frame = CGRect(x: 30, y: 110, width: view.frame.size.width - 60, height: view.frame.size.height - 170)
+            qrCodeFrameView?.frame = CGRect(x: 30, y: 130, width: view.frame.size.width - 60, height: view.frame.size.height - 210)
             view.addSubview(qrCodeFrameView!)
-            view.bringSubview(toFront: qrCodeFrameView!)
+            view.bringSubviewToFront(qrCodeFrameView!)
 
             let torchOn:Bool = options.object(forKey: "torchOn") as! Bool
             if (torchOn) {
@@ -200,11 +219,11 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
             return
         }
     }
-    
+
     @objc func done() {
-        
+
     }
-    
+
     private func addNavigationBar(title:String){
         let view: UIView = self.webView.superview!
         let height: CGFloat = 40
@@ -214,10 +233,10 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
         navbar?.barTintColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
         navbar?.isTranslucent = false;
         navbar?.delegate = self as? UINavigationBarDelegate
-        
+
         let bundleUrl = Bundle.main.url(forResource: "CustomBarcodeScanner", withExtension: "bundle")
         let bundle = Bundle.init(url: bundleUrl!)
-        
+
         let closeCameraButton = UIButton(type: .custom)
         let closeCameraPath = bundle?.path(forResource: "close_camera", ofType: "png")
         let closeCamera = UIImage.init(contentsOfFile: closeCameraPath!)
@@ -229,14 +248,14 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
         currWidth?.isActive = true
         let currHeight = closeCameraButtonNav.customView?.heightAnchor.constraint(equalToConstant: 25)
         currHeight?.isActive = true
-        
-        
+
+
         let navItem = UINavigationItem(title: title)
         navbar?.setItems([navItem], animated: false)
         navbar?.titleTextAttributes = [.foregroundColor: UIColor.white]
         navItem.leftBarButtonItem = closeCameraButtonNav
         view.addSubview(navbar!)
-        
+
         let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
         let statusBarColor = #colorLiteral(red: 0.1725490196, green: 0.4, blue: 0.2, alpha: 1)
         statusBarView.backgroundColor = statusBarColor
@@ -317,19 +336,25 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
         self.stopCapture()
         self.sendResultSuccess(msg: "cancel")
     }
-    
+
     @objc(jumpButtonAction:)
     func jumpButtonAction(sender: UIButton!) {
         self.stopCapture()
         self.sendResultSuccess(msg: "jump")
     }
-    
+
+    @objc(customButtonAction:)
+    func customButtonAction(sender: UIButton!) {
+        self.stopCapture()
+        self.sendResultSuccess(msg: "custom_result")
+    }
+
     @objc(selectButtonAction:)
     func selectButtonAction(sender: UIButton!) {
         self.stopCapture()
         self.sendResultSuccess(msg: "select")
     }
-    
+
     @objc(nextButtonAction:)
     func nextButtonAction(sender: UIButton!) {
         self.stopCapture()
@@ -400,6 +425,7 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
         if(subTitle != nil) {subTitle!.removeFromSuperview()}
         if(jumpButton != nil) {jumpButton!.removeFromSuperview()}
         if(selectButton != nil) {selectButton!.removeFromSuperview()}
+        if(customButton != nil) {customButton!.removeFromSuperview()}
 
         captureSession = nil
         videoPreviewLayer = nil
@@ -411,6 +437,7 @@ class CustomBarcodeScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate, 
         subTitle = nil
         jumpButton = nil
         selectButton = nil
+        customButton = nil
     }
 
     func sendResultFailure(error: Error? = nil, msg: String = ""){
